@@ -13,14 +13,17 @@
                     <a class="nav-link" href="{% url 'user-login' %}">Login</a>
               </li>
 
-
         {% else %}
                   <li class="nav-item">
                     <a class="nav-link" href="{% url 'user-logout' %}">Logout</a>
                   </li>
                   <li class="nav-item">
+                    <a class="nav-link" href="{% url 'wishlist' %}">Wishlist</a>
+                  </li>
+                  <li class="nav-item">
                     <span class="nav-link disabled" href="#">Welcome, {{request.user}}.</span>
                   </li>
+                  
         {% endif %}
             </ul>
         </div>

@@ -2,7 +2,7 @@
 
 {% block content %}
 <form class="form-inline my-2 my-lg-0">
-        <input class="form-control mr-sm-2" type="search" placeholder="Search Items" aria-label="Search">
+        <input class="form-control mr-sm-2" type="text" name='q'placeholder="Search Items" value="{{request.GET.q}}" aria-label="Search">
         <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
 </form>
 <div class="row">
@@ -13,10 +13,34 @@
             <div class="card-body bg-light">
                 <h3 class="card-title">{{item.name}}</h3>
                 <a href="{% url 'item-detail' item.id %}" class="btn btn-outline-dark">More</a>
+
+                {% if request.user.is_authenticated %}
+                <button class ="btn" onclick="favorite({{item.id}})"><i id = "button-{{item.id}}" class="fas fa-star {% if item.id in favorites%}  text-warning {% endif %}"></i></button>
+                {% endif %}
             </div>
         </div>
     </div>
 
 {% endfor %}
 </div>
+<script>
+function favorite(item_id){
+  let button_id = "#button-"+item_id
+  $.ajax({
+    url: "/items/"+item_id+"/favorite/",
+    type: "GET",
+    success: function(data){
+      if(data.action === "favorite"){
+        $(button_id).addClass('text-warning')
+      }
+      else{
+        $(button_id).removeClass('text-warning')
+      }
+    },
+    error: function(){
+      alert("Something went Wrong!")
+    },
+  })
+}
+</script>
 {% endblock%}
